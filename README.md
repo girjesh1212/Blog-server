@@ -42,9 +42,38 @@ users.
 On going to the route "GET localhost:PORT/" , you should see a list of available routes.
 However, those available routes are:
 
+userRoutes: [
+    "GET /user/test",
+    "POST /user/register",
+    "POST /user/login",
+    "GET /user/profile"
+],
+
+blogRoutes: [
+    "GET /blog/test",
+    "POST /blog/create",
+    "GET /blog/fetch/:num",
+    "GET /blog/fetch/:email/:num",
+    "PUT /blog/update",
+    "POST /blog/delete"
+]
+
+Do not hesitate to try POST/PUT request without request body or authorization. 
+On visiting the routes, proper messages will be returned back by the server to guide you. 
+
 ## Try the routes and enjoy
 Open postman and try these different routes.
 
 In case of following messages:
 - **Unauthorized**: Send authorization token in header obtained from /user/login route
 - **{field: "This field is required"}** => Send this field in request body 
+
+
+## How Node Cache is used? 
+- The most frequent and common route for everyone is **GET /blog/fetch/:num** route. The data returned by this route has been cached for 10 minutes. 
+
+- However, if any blog is updated/deleted/modified, then this cached data has to be flushed, which is handled in the code.
+
+- However, the caching can be improved in case of blog update by modifying single cached blog according to the request body. 
+
+- In case of delete and create, entire caching has to be modified which would be a lot of code and slow process. In this case, a direct flush is better.
